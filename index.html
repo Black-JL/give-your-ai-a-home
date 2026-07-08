@@ -150,10 +150,52 @@ figure.wire figcaption { font-family: var(--type-serif); font-style: italic; fon
 @media print {
   nav.toc { display: none; }
   .wrap { display: block; max-width: 100%; }
-  body { font-size: 11pt; }
+  html { font-size: 13.5px; }   /* scale all rem-based type (headings, callouts, code, tree) down ~15% for the PDF */
+  body { font-size: 9.5pt; line-height: 1.42; }    /* body paragraph text down from 11pt; tighter leading */
   .prompt .copy-btn, .pdf-btn, .no-print { display: none; }
-  section.chapter { page-break-inside: avoid; }
   .tree { background: #f4f4f2; color: #16110d; border: 1px solid #ccc; }
+
+  /* --- tighter PDF layout: trim vertical whitespace throughout --- */
+  main { padding: 0 0 1rem; }
+  .hero { padding-bottom: 1.1rem; margin-bottom: 1.4rem; }
+  .hero h1 { margin-bottom: 0.7rem; }
+  .hero .eyebrow { margin-bottom: 0.6rem; }
+  .hero .meta { margin-top: 0.9rem; }
+  section.chapter { margin-bottom: 1.6rem; }
+  section.chapter > .ch-num { margin-bottom: 0.4rem; }
+  section.chapter > h2 { margin-bottom: 0.7rem; }
+  section.chapter h3 { margin: 1.1rem 0 0.45rem; }
+  p { margin-bottom: 0.6rem; }
+  ul.body, ol.body { margin-bottom: 0.6rem; }
+  ul.body li, ol.body li { margin-bottom: 0.28rem; }
+  .beats { gap: 0.55rem; margin: 0.9rem 0; }
+  .beat { padding-top: 0.55rem; }
+  .tiers { gap: 0.6rem; margin: 0.9rem 0; }
+  .tier { padding: 0.75rem 0.9rem; }
+  .tier .tier-desc { margin-bottom: 0.5rem; }
+  .tier .tier-meta { padding-top: 0.5rem; }
+  .prompt { margin: 0.85rem 0; }
+  .prompt .prompt-head { padding: 0.4rem 0.85rem; }
+  .prompt pre { padding: 0.65rem 0.9rem; line-height: 1.4; }
+  .callout { padding: 0.6rem 0.9rem; margin: 0.85rem 0; line-height: 1.42; }
+  .callout p { margin-bottom: 0.35rem; }
+  .tree { padding: 0.75rem 0.95rem; margin: 0.85rem 0; line-height: 1.55; }
+  .rubric { margin: 0.9rem 0; }
+  .rubric .rrow { padding: 0.45rem 0.9rem; }
+  figure.wire { margin: 1rem 0 0.85rem; }
+  figure.wire figcaption { margin-top: 0.45rem; }
+  .refs-grid { gap: 1rem 2rem; margin-top: 0.9rem; }
+  .ref-group li { margin-bottom: 0.35rem; }
+  .refs-subhead { margin: 1.4rem 0 0.3rem; }
+  .refs-list { margin-top: 0.7rem; }
+  .ref-item { padding: 0.5rem 0; }
+  .endnote { margin-top: 1.6rem; padding-top: 1rem; }
+
+  /* let chapters flow across page breaks (no big end-of-page gaps),
+     but never orphan a heading from the text that follows it */
+  section.chapter { break-inside: auto; }
+  section.chapter > h2, section.chapter h3 { break-after: avoid; }
+  .callout, .prompt, .tier, figure.wire, .ref-item { break-inside: avoid; }
 }
 </style>
 </head>
