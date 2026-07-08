@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Give Your AI a Home — A Workspace for Your White Paper</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #fdfdfd;
+  --fg: #16110d;
+  --fg-soft: #4a4a4a;
+  --fg-muted: #8a8a8a;
+  --accent: #154734;          /* Army-Baylor dark green */
+  --accent-soft: #e8efe9;
+  --rule: #e6e4df;
+  --warn: #b45309;
+  --danger: #b91c1c;
+  --good: #166534;
+  --paper: #f7f5ee;
+  --type-sans: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+  --type-serif: ui-serif, "Charter", "Iowan Old Style", "Source Serif Pro", Georgia, serif;
+  --type-mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--fg); font-family: var(--type-sans); font-size: 18px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+/* LAYOUT */
+.wrap { display: grid; grid-template-columns: 260px minmax(0, 760px); gap: 3rem; max-width: 1120px; margin: 0 auto; padding: 0 2rem; }
+nav.toc { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; padding: 2.5rem 0; font-size: 0.9rem; }
+nav.toc .toc-brand { font-weight: 700; color: var(--accent); letter-spacing: -0.01em; font-size: 1rem; margin-bottom: 0.35rem; }
+nav.toc .toc-sub { color: var(--fg-muted); font-size: 0.78rem; margin-bottom: 1.75rem; line-height: 1.4; }
+nav.toc ol { list-style: none; }
+nav.toc li { margin-bottom: 0.15rem; }
+nav.toc a { display: block; color: var(--fg-soft); text-decoration: none; padding: 0.35rem 0.6rem 0.35rem 0.75rem; border-left: 2px solid transparent; border-radius: 0 3px 3px 0; transition: all 0.15s; }
+nav.toc a:hover { color: var(--accent); background: var(--accent-soft); }
+nav.toc a.active { color: var(--accent); font-weight: 600; border-left-color: var(--accent); background: var(--accent-soft); }
+nav.toc a .n { color: var(--fg-muted); font-feature-settings: "tnum"; font-size: 0.78rem; margin-right: 0.5rem; }
+
+main { padding: 2.5rem 0 8rem; }
+
+/* HERO */
+.hero { padding-bottom: 2.5rem; margin-bottom: 3rem; border-bottom: 2px solid var(--fg); }
+.hero .eyebrow { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 1.25rem; }
+.hero h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 300; letter-spacing: -0.035em; line-height: 1.02; margin-bottom: 1.25rem; }
+.hero h1 strong { font-weight: 600; color: var(--accent); }
+.hero .standfirst { font-family: var(--type-serif); font-size: clamp(1.15rem, 2vw, 1.4rem); color: var(--fg-soft); line-height: 1.5; max-width: 54ch; }
+.hero .meta { margin-top: 2rem; font-size: 0.85rem; color: var(--fg-muted); letter-spacing: 0.01em; }
+
+/* SECTIONS */
+section.chapter { margin-bottom: 4rem; scroll-margin-top: 1.5rem; }
+section.chapter > .ch-num { font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.75rem; }
+section.chapter > h2 { font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 300; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 1.5rem; }
+section.chapter h3 { font-size: 1.3rem; font-weight: 600; letter-spacing: -0.01em; margin: 2.25rem 0 0.85rem; }
+p { margin-bottom: 1.1rem; max-width: 64ch; }
+p.lede { font-family: var(--type-serif); font-size: 1.2rem; color: var(--fg-soft); line-height: 1.55; }
+strong { font-weight: 600; }
+em { font-style: italic; }
+a.inline { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--rule); }
+a.inline:hover { border-bottom-color: var(--accent); }
+code { font-family: var(--type-mono); font-size: 0.88em; background: #f1f0ec; padding: 0.08em 0.36em; border-radius: 3px; }
+ul.body, ol.body { margin: 0 0 1.25rem 0; padding-left: 1.4rem; max-width: 64ch; }
+ul.body li, ol.body li { margin-bottom: 0.55rem; padding-left: 0.3rem; }
+ul.body li::marker { color: var(--accent); }
+
+/* STEP BEATS */
+.beats { display: grid; gap: 1rem; margin: 1.75rem 0; }
+.beat { display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: start; border-top: 1px solid var(--rule); padding-top: 1rem; }
+.beat .beat-word { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; color: var(--accent); padding-top: 0.15rem; min-width: 6.5rem; }
+.beat .beat-body { color: var(--fg-soft); }
+.beat .beat-body strong { color: var(--fg); }
+
+/* PROMPT BOX */
+.prompt { position: relative; background: var(--paper); border-left: 3px solid var(--accent); border-radius: 0 4px 4px 0; margin: 1.5rem 0; overflow: hidden; }
+.prompt .prompt-head { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 1rem; background: rgba(21,71,52,0.06); border-bottom: 1px solid rgba(21,71,52,0.12); }
+.prompt .prompt-tag { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.prompt .copy-btn { font-family: var(--type-sans); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--accent); background: transparent; border: 1px solid rgba(21,71,52,0.3); border-radius: 3px; padding: 0.2rem 0.6rem; cursor: pointer; transition: all 0.15s; }
+.prompt .copy-btn:hover { background: var(--accent); color: white; }
+.prompt pre { font-family: var(--type-mono); font-size: 0.86rem; line-height: 1.6; color: var(--fg); padding: 1rem 1.15rem; white-space: pre-wrap; overflow-x: auto; }
+
+/* CALLOUT */
+.callout { border-radius: 4px; padding: 1rem 1.25rem; margin: 1.5rem 0; font-size: 0.95rem; line-height: 1.55; }
+.callout .callout-tag { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; margin-bottom: 0.35rem; display: block; }
+.callout.tip { background: var(--accent-soft); border-left: 4px solid var(--good); }
+.callout.tip .callout-tag { color: var(--good); }
+.callout.warn { background: #fdf6ec; border-left: 4px solid var(--warn); }
+.callout.warn .callout-tag { color: var(--warn); }
+.callout.stop { background: #fcf0f0; border-left: 4px solid var(--danger); }
+.callout.stop .callout-tag { color: var(--danger); }
+.callout p { margin-bottom: 0.5rem; max-width: none; }
+.callout p:last-child { margin-bottom: 0; }
+
+/* TIER TABLE */
+.tiers { display: grid; gap: 1rem; margin: 1.75rem 0; }
+.tier { border: 1px solid var(--rule); border-radius: 5px; padding: 1.25rem 1.4rem; background: white; }
+.tier.rung2 { border-color: var(--accent); box-shadow: 0 1px 0 var(--accent) inset, 0 0 0 1px var(--accent); }
+.tier .tier-top { display: flex; align-items: baseline; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+.tier .tier-rung { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 700; color: var(--fg-muted); }
+.tier .tier-name { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; }
+.tier.rung2 .tier-name { color: var(--accent); }
+.tier .tier-badge { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: white; background: var(--accent); padding: 0.15rem 0.5rem; border-radius: 3px; }
+.tier .tier-desc { color: var(--fg-soft); font-size: 0.95rem; margin-bottom: 0.85rem; max-width: none; }
+.tier .tier-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.5rem 1.25rem; border-top: 1px solid var(--rule); padding-top: 0.75rem; }
+.tier .tier-meta div { font-size: 0.82rem; }
+.tier .tier-meta .k { color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.66rem; font-weight: 700; display: block; margin-bottom: 0.1rem; }
+.tier .tools { margin-top: 0.85rem; font-size: 0.85rem; color: var(--fg-soft); }
+.tier .tools b { color: var(--fg); font-weight: 600; }
+
+/* FOLDER TREE */
+.tree { font-family: var(--type-mono); font-size: 0.86rem; line-height: 1.75; background: #1c1c1a; color: #e8e8e4; border-radius: 5px; padding: 1.25rem 1.4rem; margin: 1.5rem 0; overflow-x: auto; white-space: pre; tab-size: 2; }
+.tree .dir { color: #86c8a8; }
+.tree .cmt { color: #8a8a82; }
+
+/* RUBRIC ROW */
+.rubric { border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; margin: 1.5rem 0; }
+.rubric .rrow { display: grid; grid-template-columns: 10rem 1fr; gap: 1rem; padding: 0.7rem 1.1rem; border-top: 1px solid var(--rule); font-size: 0.9rem; }
+.rubric .rrow:first-child { border-top: none; background: var(--accent-soft); font-weight: 600; }
+.rubric .rrow .rk { font-weight: 600; color: var(--accent); }
+
+.endnote { margin-top: 4rem; padding-top: 1.75rem; border-top: 2px solid var(--fg); font-family: var(--type-serif); font-style: italic; color: var(--fg-soft); font-size: 1.05rem; }
+.endnote strong { font-style: normal; color: var(--fg); }
+
+.pdf-btn { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.75rem; padding: 0.62rem 1.2rem; background: var(--accent); color: #fff; text-decoration: none; border-radius: 5px; font-size: 0.9rem; font-weight: 600; letter-spacing: 0.01em; transition: background 0.15s; }
+.pdf-btn:hover { background: #0e3626; }
+
+figure.wire { margin: 2rem 0 1.5rem; }
+figure.wire img { width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 6px; background: #fff; }
+figure.wire figcaption { font-family: var(--type-serif); font-style: italic; font-size: 0.92rem; color: var(--fg-muted); margin-top: 0.7rem; line-height: 1.5; }
+
+/* RESOURCES / REFERENCES */
+.refs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.9rem 2.75rem; margin: 1.75rem 0 0; }
+.ref-group h3 { font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 0 0 0.7rem; }
+.ref-group ul { list-style: none; padding: 0; margin: 0; }
+.ref-group li { font-size: 0.92rem; line-height: 1.45; color: var(--fg-soft); margin-bottom: 0.6rem; max-width: none; }
+.ref-group li a { color: var(--fg); }
+.refs-subhead { font-size: 1.2rem; font-weight: 600; margin: 3rem 0 0.4rem; }
+.refs-list { display: grid; gap: 0; margin: 1.25rem 0 0; }
+.ref-item { display: grid; grid-template-columns: 15.5rem 1fr; gap: 0.3rem 1.5rem; align-items: baseline; border-top: 1px solid var(--rule); padding: 0.85rem 0; }
+.ref-item:last-child { border-bottom: 1px solid var(--rule); }
+.ref-item .ref-name { font-weight: 600; font-size: 0.95rem; }
+.ref-item .ref-desc { font-size: 0.9rem; color: var(--fg-soft); line-height: 1.45; max-width: none; }
+@media (max-width: 900px) { .refs-grid { grid-template-columns: 1fr; } .ref-item { grid-template-columns: 1fr; gap: 0.15rem; } }
+
+/* MOBILE + PRINT */
+@media (max-width: 900px) {
+  .wrap { grid-template-columns: 1fr; gap: 0; }
+  nav.toc { position: static; height: auto; overflow: visible; padding: 2rem 0 1rem; border-bottom: 1px solid var(--rule); margin-bottom: 1rem; }
+  nav.toc ol { columns: 2; }
+}
+@media print {
+  nav.toc { display: none; }
+  .wrap { display: block; max-width: 100%; }
+  body { font-size: 11pt; }
+  .prompt .copy-btn, .pdf-btn, .no-print { display: none; }
+  section.chapter { page-break-inside: avoid; }
+  .tree { background: #f4f4f2; color: #16110d; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="toc">
+  <div class="toc-brand">Give Your AI a Home</div>
+  <div class="toc-sub">Dr. Jared Black</div>
+  <ol>
+    <li><a href="#taxes"><span class="n">1</span>The three taxes</a></li>
+    <li><a href="#shift"><span class="n">2</span>The shift</a></li>
+    <li><a href="#discover"><span class="n">3</span>Move 1 &middot; Discover</a></li>
+    <li><a href="#scaffold"><span class="n">4</span>Move 2 &middot; Scaffold</a></li>
+    <li><a href="#enforce"><span class="n">5</span>Move 3 &middot; Enforce</a></li>
+    <li><a href="#collab"><span class="n">6</span>Collaboration &amp; version control</a></li>
+    <li><a href="#voice"><span class="n">7</span>Teach it your voice</a></li>
+    <li><a href="#your-turn"><span class="n">8</span>Your turn</a></li>
+    <li><a href="#resources"><span class="n">9</span>Resources</a></li>
+  </ol>
+</nav>
+
+<main>
+  <header class="hero">
+    <div class="eyebrow">Train Your AI &middot; Companion Guide</div>
+    <h1>Give your AI a <strong>home</strong>.</h1>
+    <p class="standfirst">Turn a semester of scattered course material into a workspace that helps you write your white paper &mdash; and keeps helping long after this class ends.</p>
+    <div class="meta">Foundations of Applied AI in Health Care &nbsp;&middot;&nbsp; follow along on whatever AI tool you already have open.</div>
+    <a class="pdf-btn no-print" href="white-paper-workspace-guide.pdf" download>&#8595;&nbsp; Download this guide as a PDF</a>
+  </header>
+
+  <div class="callout tip" id="quickstart">
+    <span class="callout-tag">In a hurry? Do this tonight</span>
+    <p>Open ChatGPT, Claude, or Gemini &rarr; make a <strong>Project</strong> (Claude / ChatGPT) or a <strong>Gem</strong> (Gemini) &rarr; paste in the instruction file from <a class="inline" href="#scaffold">Move&nbsp;2</a> &rarr; upload the documents you're working from &rarr; then start every chat from inside it. That's the whole move &mdash; it's Rung&nbsp;2, the right home for almost everyone. Everything below is <em>why</em> it works and how to do it well.</p>
+  </div>
+
+  <!-- 1. THE THREE TAXES -->
+  <section class="chapter" id="taxes">
+    <div class="ch-num">01 &middot; The three taxes</div>
+    <h2>Most of what you need is already on your computer. You're just paying to move it around.</h2>
+    <p class="lede">A syllabus. Ten journal prompts. Lab outputs. Readings. Slide decks. An AI-model presentation. It has come at you as a flood of email and Canvas notifications, and most of it feels like noise you're trying to keep up with.</p>
+    <p>It isn't noise. It's the raw material for the one deliverable that's still ahead of you: a <strong>1&ndash;2 page white paper on a real healthcare topic, worth 20% of your grade, due 20 July.</strong> Much of what you'll build on is already sitting in a folder somewhere on your computer &mdash; your course, your notes, your standards; the sources for your topic you'll still go and find. Either way, the hard part was never the material. It's what it <em>costs</em> you to <em>use</em> it &mdash; and that cost comes as three quiet taxes you pay all week without noticing:</p>
+    <div class="beats">
+      <div class="beat"><div class="beat-word">Reload</div><div class="beat-body"><strong>You re-explain yourself every time.</strong> Every fresh chat, you pour the same funnel back in &mdash; the format, the style, the example of good, the brain-dump of what you know. The AI forgot all of it the moment the last chat closed.</div></div>
+      <div class="beat"><div class="beat-word">File</div><div class="beat-body"><strong>You re-find your own work.</strong> Where did I put that reading? Which draft is the latest? <code>OER_v3_FINAL_FINAL.docx</code>.</div></div>
+      <div class="beat"><div class="beat-word">Relay</div><div class="beat-body"><strong>You re-say it for each new reader.</strong> The same point, retranslated for a peer, a boss, a patient &mdash; reformatted into a memo, a slide, an email, every time from scratch.</div></div>
+    </div>
+    <p>You've spent this course learning to write good prompts &mdash; one careful question at a time, into an AI that forgets you the moment the chat closes. That works, but it pays all three taxes in full. This guide is about the next move: <strong>give the AI a persistent home</strong> &mdash; a place that already holds your course, your topic, and your standards &mdash; so you stop starting cold.</p>
+    <p>The whole method is three moves. You'll do them in order, and the rest of this guide is those three moves spelled out with the exact prompts to paste:</p>
+    <div class="beats">
+      <div class="beat"><div class="beat-word">Discover</div><div class="beat-body"><strong>You don't have to know how to organize it first.</strong> Point the AI at the pile and let it help you see the shape &mdash; what's in there, what your paper could be about, what supports it.</div></div>
+      <div class="beat"><div class="beat-word">Scaffold</div><div class="beat-body"><strong>Once you can see the shape, build the folder.</strong> A place for your sources, a place for your ideas, a place for the rules. Every file gets one home.</div></div>
+      <div class="beat"><div class="beat-word">Enforce</div><div class="beat-body"><strong>Then force everything through the standard and iterate.</strong> Read it hard, draft grounded, review until it holds &mdash; until you'd defend every line.</div></div>
+    </div>
+    <p>First, though, you have to decide <em>where</em> the AI's home will be &mdash; because that decides which of the three taxes you actually stop paying.</p>
+  </section>
+
+  <!-- 2. THE SHIFT -->
+  <section class="chapter" id="shift">
+    <div class="ch-num">02 &middot; The shift</div>
+    <h2>There are three ways to give the AI a home. The difference is who does the remembering.</h2>
+    <p class="lede">The three taxes &mdash; reloading, re-finding, re-saying &mdash; don't disappear. In every setup below they still exist. The only thing that changes is <em>who carries them</em>: you, a box in the cloud, or a folder on your own computer.</p>
+
+    <figure class="wire">
+      <img src="figures/who-carries-context.png" alt="Three panels showing the same three chips — re-explaining, re-finding files, re-saying it. Panel 1, Just Prompting: you carry all three chips and reload them every session; the AI is a blank slate. Panel 2, A Saved Workspace: the three chips live in a box in the vendor's cloud that you load once and the AI reads each time. Panel 3, A Folder on Your Computer: the chips live in a folder on your machine with the AI inside it, reading them itself while you just ask. A bar underneath shows the work of remembering moving off of you and onto a structure that lives on your computer.">
+      <figcaption>Left to right, those three panels are your three rungs. Same three taxes in each &mdash; but the work of remembering slides off of <em>you</em> and onto a structure you own. That slide, from left to right, is the whole idea of this guide.</figcaption>
+    </figure>
+
+    <p>Picture these three setups as a ladder: <em>just prompting</em> at the bottom, a <em>saved workspace</em> in the cloud in the middle, and a <em>persistent home on your own computer</em> at the top. You do not have to climb to the top. Higher rungs are more capable and keep your work more firmly under your control &mdash; but they ask more of you to set up. Most of you should stand on the middle rung. Here's each one in full:</p>
+
+    <div class="tiers">
+      <div class="tier rung1">
+        <div class="tier-top"><span class="tier-rung">Rung 1</span><span class="tier-name">Upload into a chat</span></div>
+        <p class="tier-desc">Drag your documents into a normal chat and ask questions. Fine for a quick, one-time task &mdash; but it isn't really a <em>home</em>. When the chat closes, the context is gone; next time you re-upload and re-explain from scratch. Nothing is organized, and nothing persists.</p>
+        <div class="tier-meta">
+          <div><span class="k">Coding?</span> None</div>
+          <div><span class="k">Where your work lives</span> The chat window</div>
+          <div><span class="k">Persists?</span> No &mdash; resets each chat</div>
+          <div><span class="k">Good for</span> A one-off question</div>
+        </div>
+      </div>
+
+      <div class="tier rung2">
+        <div class="tier-top"><span class="tier-rung">Rung 2</span><span class="tier-name">A project workspace</span><span class="tier-badge">Start here</span></div>
+        <p class="tier-desc">A saved workspace where you write the AI's instructions once and upload your knowledge once &mdash; and every new conversation starts <em>warm</em>, already knowing your course and your topic. No coding. This is the right home for almost everyone in this room.</p>
+        <div class="tier-meta">
+          <div><span class="k">Coding?</span> None</div>
+          <div><span class="k">Where your work lives</span> The vendor's cloud</div>
+          <div><span class="k">Persists?</span> Yes &mdash; across every chat</div>
+          <div><span class="k">Good for</span> Your white paper, and beyond</div>
+        </div>
+        <p class="tools"><b>What it's called:</b> <b>Gemini Gems</b> (free) &middot; ChatGPT <b>Projects</b> (works on the free tier) &middot; Claude <b>Projects</b> (free, capped at a handful) &middot; Microsoft <b>Copilot</b> agents (needs a paid work license). On the government side, <b>GenAI.mil</b> now has a no-code <b>Agent Designer</b> that follows this same save-your-context pattern.</p>
+      </div>
+
+      <div class="tier rung3">
+        <div class="tier-top"><span class="tier-rung">Rung 3</span><span class="tier-name">A workspace on your own computer</span></div>
+        <p class="tier-desc">Rungs 1 and 2 hand you text to copy out. Rung 3 does more than generate &mdash; it <em>acts</em>. Because it runs on your own computer, it can do anything your command line can: update a document in place instead of making a new copy every time, run a program, render a polished PDF, reorganize a folder, even send an email on your behalf. Everything stays on your hard drive; nothing lives in someone else's window. The most powerful and most private option, with the steepest ramp.</p>
+        <div class="tier-meta">
+          <div><span class="k">Coding?</span> Some comfort with a terminal helps</div>
+          <div><span class="k">Where your work lives</span> Your own hard drive</div>
+          <div><span class="k">Persists?</span> Yes &mdash; it's just your files</div>
+          <div><span class="k">Good for</span> Power users; sensitive work</div>
+        </div>
+        <p class="tools"><b>Where to start:</b> if you want to try this rung, <b>Cline</b> is the friendliest on-ramp for a non-coder. <span style="color:var(--fg-muted)">(Alternatives, roughly hardest-working to simplest: Claude <b>Code</b>, Gemini <b>CLI</b>, OpenAI <b>Codex CLI</b>, <b>Cursor</b>; and Claude <b>Cowork</b> / Claude <b>for Chrome</b>, both still in preview. The exact tools churn &mdash; the discipline doesn't.)</span> For data that legally can't leave your computer, a <b>local model</b> run with <b>Ollama</b> or <b>LM Studio</b> keeps everything &mdash; files <em>and</em> processing &mdash; on your machine.</p>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <span class="callout-tag">The mental model &mdash; above and below the waterline</span>
+      <p>The word "prompt" only names the tip of the iceberg &mdash; the sentence you typed. Below the waterline sits everything the model actually reads to answer you: the standing instructions, your uploaded files, the earlier turns of the chat, whatever it retrieved. A home is just a way to <em>own</em> what's below the waterline instead of retyping it. The rule of thumb: <strong>Always Be Contexting</strong> &mdash; never make the model guess at something you could have handed it.</p>
+    </div>
+    <div class="callout tip">
+      <span class="callout-tag">The point</span>
+      <p>The same three moves &mdash; discover, scaffold, enforce &mdash; work on <em>every</em> rung. Pick the lowest rung you're comfortable with today. You can always climb later, and nothing you learn is wasted when you do.</p>
+    </div>
+    <div class="callout stop">
+      <span class="callout-tag">Before you upload anything &mdash; a health-care warning</span>
+      <p>"Runs on my computer" is not the same as "stays on my computer." On Rungs 1, 2, and most of Rung 3, your files may sit on your disk but their <em>contents</em> are still sent to a cloud model on every request. That means <strong>no PHI, no PII, no patient data, no CUI</strong> goes into any of these &mdash; the same rule you learned in Lesson 3. Your white paper uses public and course material, so you're fine here. The only setup that keeps data truly on the machine is a <em>local</em> model (Ollama or LM Studio) &mdash; that's the path for genuinely sensitive work.</p>
+    </div>
+  </section>
+
+  <!-- 3. MOVE 1 · DISCOVER -->
+  <section class="chapter" id="discover">
+    <div class="ch-num">03 &middot; Move 1 &middot; Discover</div>
+    <h2>Point the AI at the pile and let it show you what's there.</h2>
+    <p class="lede">The first move surprises people. You don't sort the pile first and then ask the AI. You gather it all in one place, hand the AI the <em>un</em>sorted heap, and let it help you see what's there &mdash; including what your paper should be about.</p>
+
+    <h3>First, gather the corpus into one folder</h3>
+    <p>Before the AI can help you make sense of the course, it needs to be able to see the course. Collect all of it &mdash; you'll sort it later:</p>
+    <ul class="body">
+      <li><strong>The syllabus.</strong> The most important file. The white-paper rubric lives here &mdash; what it must contain, how it's graded, the writing standard.</li>
+      <li><strong>Readings and slide decks</strong> from every lesson so far.</li>
+      <li><strong>Your own work</strong> &mdash; lab outputs, your reflective journal entries, your AI-model presentation. Your half-formed ideas are in there.</li>
+    </ul>
+    <p>Do this yourself &mdash; don't wait for someone to hand you a tidy bundle. Every course you take dumps its material into Canvas, and knowing how to pull the whole thing down is a skill you'll reuse long after this class ends. Open <code>Files</code> in the course menu, tick the checkbox at the top to select everything, and download it as a zip. For the syllabus and anything that doesn't live in Files, open it and use your browser's <code>Print &rarr; Save as PDF</code>. Drop it all in one place for now &mdash; even your <code>Downloads</code> folder is fine.</p>
+
+    <h3>Then let the AI find your topic</h3>
+    <p>Load your material into your Rung&nbsp;2 workspace (or point your Rung&nbsp;3 agent at the folder), then paste this:</p>
+    <div class="prompt">
+      <div class="prompt-head"><span class="prompt-tag">Paste this &middot; discovery</span><button class="copy-btn">Copy</button></div>
+      <pre>Here is everything from my Foundations of Applied AI in Health
+Care course. Read the syllabus FIRST — especially the White Paper
+assignment and how it's graded.
+
+Then help me find my topic:
+
+1. Summarize the main themes this course has actually covered,
+   based on the materials — not general knowledge.
+
+2. Propose 6–8 white-paper topics that are:
+   - relevant to a real, contemporary healthcare organization,
+   - clearly tied to THIS course's content (name which lesson or
+     reading each one draws on),
+   - narrow enough to cover well in 1–2 pages.
+
+3. For each topic, note what I could use for background and
+   what a recommended solution might look like.
+
+Before you finalize the list, ask me 2–3 questions about my job,
+my interests, and what I actually care about — so the topics fit
+me, not a generic student.</pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-tag">Don't dump the whole semester</span>
+      <p>Free workspaces cap how many files you can add, and a hundred slide decks bury the few that matter. Load the <strong>syllabus and rubric first</strong>, then the <strong>three to five readings you'll actually cite</strong> &mdash; add more only as you use them. Quality of context beats quantity, and it keeps you under the free-tier limits.</p>
+    </div>
+    <p>Answer its questions honestly. What comes back is a shortlist of topics that are <em>already</em> grounded in the course and matched to you. You didn't need to know your topic before you started &mdash; the AI plus the corpus surfaced it. Pick one and move on.</p>
+    <div class="callout warn">
+      <span class="callout-tag">Keep the wheel</span>
+      <p>The AI proposes; <em>you</em> decide. Don't take the first topic because it's easy &mdash; take the one you can say something real about. Writing is thinking, and it's a lot easier to think about something you care about.</p>
+    </div>
+  </section>
+
+  <!-- 4. MOVE 2 · SCAFFOLD -->
+  <section class="chapter" id="scaffold">
+    <div class="ch-num">04 &middot; Move 2 &middot; Scaffold</div>
+    <h2>You don't build the folder from scratch &mdash; you start from a kit.</h2>
+    <p class="lede">The rule is simple: <strong>every file has one home.</strong> When you know where each thing goes, so does the AI. So we hand you a starter workspace &mdash; you fill it in rather than architect it.</p>
+    <div class="callout tip">
+      <span class="callout-tag">Download the starter kit</span>
+      <p>Grab the <strong>starter workspace</strong> from the course page and unzip it. It already holds the instruction file, a <code>sources/</code> folder, the reading checklist, and the rubric. On Rung&nbsp;2, upload its files into your Project or Gem; on Rung&nbsp;3, just open the folder with your agent.</p>
+    </div>
+    <p>Here's what's inside &mdash; four homes, nothing spare:</p>
+    <div class="tree">
+<span class="dir">your-workspace/</span>
+├── INSTRUCTIONS.md   <span class="cmt"># the contract — who the AI is, and its hard rules</span>
+├── <span class="dir">sources/</span>          <span class="cmt"># the papers &amp; documents you read and cite</span>
+├── <span class="dir">rubric/</span>           <span class="cmt"># reading-a-paper.md + the white-paper rubric</span>
+└── <span class="dir">drafts/</span>           <span class="cmt"># your writing, kept in versions</span>
+    </div>
+    <p>This is where your Downloads pile gets sorted: the readings you decide to cite move into <code>sources/</code>, your standard goes in <code>rubric/</code>, and everything else you can leave behind. <code>sources/</code> is the folder that fills up &mdash; the rest barely changes.</p>
+    <h3>The instruction file &mdash; your AI's contract</h3>
+    <p>This one file changes everything: who the AI is working for, how it must behave, and the lines it can't cross. Open <code>INSTRUCTIONS.md</code> (or paste it into your Project/Gem's custom-instructions box) and fill in the one blank:</p>
+    <div class="prompt">
+      <div class="prompt-head"><span class="prompt-tag">INSTRUCTIONS.md &middot; the contract</span><button class="copy-btn">Copy</button></div>
+      <pre>WHO YOU ARE
+A skeptical, fair editor and reading coach — not a cheerleader.
+Your job is to help me understand what I read and defend what I
+write. Don't flatter, don't hedge to be polite, don't soften a
+real problem, and don't invent one.
+
+WHAT WE'RE DOING
+Helping me read and evaluate papers on [TOPIC] and write a
+1–2 page white paper.
+
+HARD RULES — never break these
+1. Never invent a statistic, source, quote, or citation. If you
+   don't have it, say so and ask me.
+2. Trace every factual claim to a real file in /sources. Name it.
+3. Don't lead the witness. When you evaluate anything, find what's
+   strong AND what's weak. Never just tell me what I want to hear.
+4. Flag uncertainty as uncertainty.
+5. Track which AI you are and how I used you, so I can disclose it.
+
+VOICE
+Plain English. BLUF — bottom line up front. Short sentences,
+active verbs. No "utilize," no "leverage," no hedging. If I'd be
+embarrassed to say it out loud in a briefing, rewrite it.</pre>
+    </div>
+    <div class="callout tip">
+      <span class="callout-tag">One file, several names</span>
+      <p>We call this file <code>INSTRUCTIONS.md</code> because the name says what it is. It's the same idea as the <code>CLAUDE.md</code>, <code>AGENTS.md</code>, and <code>GEMINI.md</code> files you may have seen &mdash; those aren't different things, they're just the specific names certain tools look for and load <em>automatically</em>. Same contract, different filename. On Rung&nbsp;2 you paste it into a custom-instructions box; on Rung&nbsp;3 you save it under the name your tool expects. More on that in <a class="inline" href="#collab">Collaboration &amp; version control</a>.</p>
+    </div>
+    <div class="callout stop">
+      <span class="callout-tag">The line you don't cross</span>
+      <p>Rule 1 &mdash; "never invent a source" &mdash; is not boilerplate. It's the whole game. Lesson 8 taught you the rest: you are the author of record. A made-up citation the AI hands you is <em>your</em> signature on a lie.</p>
+    </div>
+  </section>
+
+  <!-- 5. MOVE 3 · ENFORCE -->
+  <section class="chapter" id="enforce">
+    <div class="ch-num">05 &middot; Move 3 &middot; Enforce</div>
+    <h2>Force everything through the standard &mdash; read, draft, review.</h2>
+    <p class="lede">The home is built. Now you keep the standard by running everything through it. Three passes, in order: understand your sources, draft grounded in them, then hand the draft to a skeptic. Each pass has one prompt.</p>
+
+    <h3>Read &mdash; understand it before you cite it</h3>
+    <p>This is the step people skip &mdash; and it's the one that separates a real white paper from a stack of half-understood quotes. Your workspace turns the AI into a <em>reading coach</em>, not a summary machine. Drop a paper into <code>sources/</code> and work through it together.</p>
+    <div class="prompt">
+      <div class="prompt-head"><span class="prompt-tag">Paste this &middot; read a paper</span><button class="copy-btn">Copy</button></div>
+      <pre>Walk me through the paper in /sources using
+rubric/reading-a-paper.md. Don't lead the witness — tell me
+what's strong AND what's weak.
+
+Go in this order:
+1. In plain English: what does this paper claim, and what
+   evidence is it actually resting on?
+2. Itemize its assumptions — the ones it states AND the ones it
+   doesn't. Which one, if wrong, breaks the conclusion?
+3. How strong is it, really — "settles it" or "suggestive"? Why?
+4. Give me the exact citation, pulled FROM the paper. Do not
+   invent one.
+
+Then quiz me: ask me to state the finding in my own words, and
+tell me where I've misunderstood it.</pre>
+    </div>
+    <p>That last move &mdash; having it <em>quiz you</em> &mdash; is how you find out whether you understood the paper or just nodded along. If you can't restate the finding with the paper closed, you're not ready to cite it.</p>
+
+    <h3>Draft &mdash; grounded, not from thin air</h3>
+    <p>With the corpus in the workspace and the instruction file in place, the AI drafts from <em>your</em> materials and <em>your</em> standard &mdash; not from generic internet filler.</p>
+    <div class="prompt">
+      <div class="prompt-head"><span class="prompt-tag">Paste this &middot; first draft</span><button class="copy-btn">Copy</button></div>
+      <pre>Using my instruction file (INSTRUCTIONS.md) and the papers in
+/sources, draft my 1–2 page white paper on [TOPIC].
+
+Follow the rubric's four parts: main idea, relevant background,
+the detail needed to understand the topic and its solutions/uses,
+and recommended solutions/uses.
+
+Rules:
+- Clear, direct style. BLUF. Active voice. Plain words.
+- Do NOT invent statistics, sources, or quotes. If you need
+  something you don't have, stop and ask me.
+- Wherever you use a fact, mark it in brackets with the file it
+  came from, e.g. [sources/ayers-2023.pdf], so I can check every
+  claim later.
+
+Draft one section at a time and pause after each so I can steer.</pre>
+    </div>
+    <p>Work through it section by section. Push back. Cut what's generic. Add what only <em>you</em> know from your own experience &mdash; that's the part no AI can supply, and it's usually what makes a white paper worth reading. You're the writer; the AI is fast hands. Those <code>[filename]</code> markers become your citation trail for the next pass.</p>
+
+    <h3>Review &mdash; you can't grade your own homework</h3>
+    <p>The draft is the easy part. What separates a real white paper from an AI-flavored one is this loop: hand it to a skeptic, take the hits, and revise. The standard is already in your folder &mdash; <code>rubric/white-paper-rubric.md</code> &mdash; so the AI grades against the real rubric, not its guess of one. Open a <strong>fresh</strong> conversation (or a different AI tool) so nothing is invested in defending the draft, and set it loose:</p>
+    <div class="prompt">
+      <div class="prompt-head"><span class="prompt-tag">Paste this &middot; adversarial review</span><button class="copy-btn">Copy</button></div>
+      <pre>You are Referee 2 — a skeptical, fair reviewer who wants this
+paper to be right, not to feel good. Here is my white paper.
+Grade it against rubric/white-paper-rubric.md.
+
+Grade each rubric criterion PASS / WEAK / FAIL and say exactly why.
+
+Then:
+1. Flag EVERY factual claim that isn't clearly traceable to one
+   of my source files. Treat each as a possible fabrication until
+   I prove otherwise.
+2. Name the single weakest argument and show how a hostile reader
+   would attack it.
+3. List what I'd have to defend if my commander asked, "Where did
+   each of these numbers and claims come from?"
+4. Check the writing against a plain-writing standard — mark
+   passive voice, hedging, and needless words to cut.
+
+Do NOT rewrite it for me. Tell me what to fix and let me fix it.</pre>
+    </div>
+    <p>Now revise against the critique. Re-run the review. Repeat until it passes clean. Two or three loops is normal &mdash; and each one is you doing the thinking, not outsourcing it.</p>
+    <div class="callout warn">
+      <span class="callout-tag">Two things the assignment demands</span>
+      <p><strong>Disclose the AI.</strong> The white paper requires you to state which AI model(s) you used and how. Keep the note from your instruction file and put it in.</p>
+      <p><strong>Own every word.</strong> The output must be edited and represent your final judgment. If you couldn't defend a sentence without the AI in the room, cut it or make it yours.</p>
+    </div>
+    <div class="callout tip">
+      <span class="callout-tag">This is the skill the Army is grading for</span>
+      <p>This "build it, then refine and test it against a hard critic" loop isn't just good practice &mdash; it's the direction professional military education is moving, with staff colleges increasingly teaching officers to work AI hard rather than take its first answer. You're rehearsing that habit, on a task that counts.</p>
+    </div>
+
+    <h3>Level up: hand it a book you've actually read</h3>
+    <p>A generic "skeptical reviewer" is good. You make it far sharper by giving it a <em>specific standard</em> to judge against &mdash; a book whose method you've genuinely internalized. Drop the book (or its key chapters) into the workspace and have the AI review your draft against it, one chapter at a time.</p>
+    <div class="callout tip">
+      <span class="callout-tag">Why this isn't cheating</span>
+      <p>I've been through the complexity of these books &mdash; read them, been tested on them, written to their standard. Putting one in the folder <em>extends my reach; it doesn't replace my judgment.</em> The book supplies the questions a careful expert reaches only after climbing it &mdash; not the five I already ask off the top of my head.</p>
+    </div>
+    <p><strong>How.</strong> Turn the book into a checklist: distill each chapter into the principles you want enforced, then run your draft against them, chapter by chapter. It can take all night. So what &mdash; that's a thoroughness no tired human sustains at 11pm. The keystone question to insist on: <em>"Itemize the explicit <strong>and implicit</strong> assumptions in this draft."</em> The implicit ones are where the bodies are buried.</p>
+    <div class="callout warn">
+      <span class="callout-tag">The one rule that keeps you honest</span>
+      <p>Never tip the model toward the answer you want. Ask it to find what's <em>wrong</em> <strong>and</strong> what's <em>right</em> &mdash; a neutral interrogation, not a friendly one. Steering it to your prior isn't just weak; it's fooling yourself. As Feynman put it: <em>"The first principle is that you must not fool yourself &mdash; and you are the easiest person to fool."</em> You're not asking the AI to bless your conclusion; you're building a machine that argues with you.</p>
+    </div>
+    <p>The books I load as reviewers, in order:</p>
+    <ul class="body">
+      <li><a class="inline" href="https://press.princeton.edu/books/hardcover/9780691214368/thinking-clearly-with-data" target="_blank" rel="noopener">Bueno de Mesquita &amp; Fowler, <em>Thinking Clearly with Data</em></a> &mdash; <strong>start here.</strong> The common language for any quantitative claim: what kind of claim is it, does the evidence support it, could something else explain it, are we measuring what we think we are.</li>
+      <li><a class="inline" href="https://causalinf.substack.com/p/claude-code-part-12-how-i-use-claude" target="_blank" rel="noopener">Scott Cunningham &mdash; the "Referee 2" protocol</a> &mdash; a worked method for turning an AI into a hostile-but-fair empirical reviewer.</li>
+      <li><a class="inline" href="https://theeffectbook.net" target="_blank" rel="noopener">Huntington-Klein, <em>The Effect</em></a> (free online) &mdash; the methods bench for anything claiming cause and effect.</li>
+    </ul>
+    <p>One discipline holds it together: <strong>reason only from sources solid enough to defend.</strong> If your draft leans on a method the book doesn't cover, the AI should say so &mdash; flag it as "needs a real source" rather than bluff from a half-remembered fact. That's the same rule as Move&nbsp;2's "never invent a source," pointed back at your own reasoning.</p>
+  </section>
+
+  <!-- 6. COLLABORATION & VERSION CONTROL -->
+  <section class="chapter" id="collab">
+    <div class="ch-num">06 &middot; Collaboration &amp; version control</div>
+    <h2>Put the home where the team can reach it &mdash; and give the AI a filename it already knows.</h2>
+    <p class="lede">A workspace on one laptop helps one person. The same workspace on a shared drive, with a standard instruction filename, becomes something a whole team &mdash; and a future you &mdash; can pick up cold. Two small decisions do it.</p>
+
+    <figure class="wire">
+      <img src="figures/messy-to-ordered.png" alt="A before-and-after diagram. On the left, files scattered across Documents, Dropbox, and a USB drive, with different naming conventions and timestamps, plus loose files like 'FINAL_final(2).pdf'. In the middle, a green wall labeled PERSISTENT INSTRUCTIONS that everything funnels through. On the right, one clean folder tree — white-paper/ with INSTRUCTIONS.md, sources/, data/, drafts/, figures/, and references.bib — every file with one home and one naming convention.">
+      <figcaption>Everything scattered on the left passes through one wall &mdash; your persistent instructions &mdash; and comes out as one system on the right. Same material, one home, one naming convention.</figcaption>
+    </figure>
+
+    <h3>Where the folder lives &mdash; collaboration platforms</h3>
+    <p>Keep the workspace on a drive that <em>everyone works from</em>, not on one person's desktop. <strong>Box</strong> and <strong>Dropbox</strong> keep one current copy that syncs to the whole team and quietly saves old versions, so there's no "final_v7_JB_edits" drift and you can roll back a bad change. <strong>GitHub</strong> does the same with a full, deliberate history &mdash; every change tracked, every version recoverable, built for people working the same files at once. Whichever you use, the win is the same: one home, one current copy, nothing lost.</p>
+    <div class="callout tip">
+      <span class="callout-tag">Version control, in one sentence</span>
+      <p>"Version control" just means the drive remembers every earlier state of your files so you can always go back. You already rely on it every time Box shows "previous versions" &mdash; naming it doesn't make it harder.</p>
+    </div>
+
+    <h3>What the AI reads first &mdash; the persistent instruction file</h3>
+    <p>Your <code>INSTRUCTIONS.md</code> works on any rung &mdash; on Rung&nbsp;2 you paste it into a custom-instructions box. But the on-your-computer tools do something better: give the file a conventional name and the agent reads it <em>automatically</em>, before you say a word, so the contract loads itself every session.</p>
+    <p>One name has become the standard: <code>AGENTS.md</code>. It's an open, vendor-neutral convention that most agent tools now read &mdash; OpenAI Codex, Cursor, the Gemini CLI, GitHub Copilot, and Claude Code. Make that your one real instruction file. A couple of tools still look for their own name, but <strong>don't keep three full copies</strong> &mdash; you'll edit one and forget the others, and you're right back to <code>FINAL_final</code>. Instead, make the others a one-line pointer:</p>
+    <div class="tree">
+<span class="dir">your-workspace/</span>
+├── AGENTS.md      <span class="cmt"># the one real instruction file — every tool reads this</span>
+├── CLAUDE.md      <span class="cmt"># one line: "See AGENTS.md"</span>
+└── GEMINI.md      <span class="cmt"># one line: "See AGENTS.md"</span>
+    </div>
+    <p>Keep that file with the rest of the workspace on your shared drive &mdash; save it to Box or Dropbox, or, on GitHub, commit it &mdash; and the <em>whole team</em> inherits the same standard from one source of truth.</p>
+  </section>
+
+  <!-- 7. TEACH IT YOUR VOICE -->
+  <section class="chapter" id="voice">
+    <div class="ch-num">07 &middot; Teach it your voice</div>
+    <h2>Beyond format &mdash; teach it who you are.</h2>
+    <p class="lede">Everything so far gets the AI to write <em>correctly</em>. This last move gets it to write like <em>you</em> &mdash; and toward what you actually care about. It's optional, and it's the difference between a competent draft and one nobody would guess a machine touched.</p>
+
+    <h3>Your voice &mdash; show, don't tell</h3>
+    <p>No rule captures rhythm, word choice, and where you land your emphasis. So don't describe your voice &mdash; <em>demonstrate</em> it. Paste in two or three pieces of writing you're proud of and let the AI infer the pattern:</p>
+    <div class="prompt">
+      <div class="prompt-head"><span class="prompt-tag">Paste this &middot; match my voice</span><button class="copy-btn">Copy</button></div>
+      <pre>Below are three things I wrote and am proud of. Don't compliment
+them — study them. Describe my voice back to me: sentence length
+and rhythm, the words I reach for and the ones I avoid, how I open
+and how I land a point.
+
+Then save that as a short style note in the workspace and write to
+it from now on. When a draft drifts off my voice, tell me where.
+
+[paste your writing here]</pre>
+    </div>
+
+    <h3>A TELOS document &mdash; the <em>why</em> behind the writing</h3>
+    <p>A style note teaches the AI <em>how</em> you write. A TELOS document teaches it <em>why</em>. It's one short structured file &mdash; your purpose, the missions you're on, your goals, and the values you won't trade &mdash; kept in the workspace root. With it, the AI stops writing generic-correct prose and starts writing toward what you're actually trying to do. A first pass is fifteen minutes:</p>
+    <div class="prompt">
+      <div class="prompt-head"><span class="prompt-tag">Paste this &middot; draft my TELOS</span><button class="copy-btn">Copy</button></div>
+      <pre>Interview me to build a short TELOS document — my purpose, my
+current missions, my goals for the next few years, and the values
+I won't compromise. Ask me one question at a time, maybe eight in
+all, and push back if an answer is vague.
+
+Then draft it as a one-page file I can keep in my workspace and
+point you at whenever we write something that matters.</pre>
+    </div>
+
+    <h3>A self-authoring exercise</h3>
+    <p>If that lands, go further on your own: structured writing about your past and your ideal future &mdash; the kind of guided reflection used in self-authoring programs. It does two things at once. It gives the AI a far richer picture of what drives you, and it shows <em>you</em> what you believe, in your own words, before you ever ask a machine to help you say it.</p>
+    <div class="callout warn">
+      <span class="callout-tag">Train your AI without un-training yourself</span>
+      <p>Handing the AI your voice and your purpose is the opposite of handing over your judgment. The clearer it is on who you are, the easier it is to catch when a draft <em>isn't</em> you &mdash; and to cut it. The goal is an assistant that sounds like your best self, not a replacement for having one.</p>
+    </div>
+  </section>
+
+  <!-- 8. YOUR TURN -->
+  <section class="chapter" id="your-turn">
+    <div class="ch-num">08 &middot; Your turn</div>
+    <h2>Now you build your own.</h2>
+    <p class="lede">You start from a workspace that's already built &mdash; you don't architect it, you fill it in. What you'll have at the end is a real deliverable and a habit that outlasts it.</p>
+    <div class="beats">
+      <div class="beat"><div class="beat-word">The kit</div><div class="beat-body"><strong>A folder, ready to go.</strong> The instruction file, a <code>sources/</code> folder, the reading checklist, the rubric. Drop a paper in, walk it through, draft against the standard.</div></div>
+      <div class="beat"><div class="beat-word">The guide</div><div class="beat-body"><strong>This companion.</strong> The three moves, the collaboration and voice add-ons, and every prompt to paste &mdash; keep it open beside your workspace.</div></div>
+      <div class="beat"><div class="beat-word">The deliverable</div><div class="beat-body"><strong>Your white paper.</strong> One to two pages, a real healthcare topic, grounded in sources you actually understand. Due 20 July. The workspace you set up today is how you read for it and write it.</div></div>
+    </div>
+    <p><strong>And it's the first rung of a tall ladder.</strong> The same pattern, fully built out, becomes a research project where one command reproduces an entire paper from raw data to final figures &mdash; the AI maintaining the pipeline while the researcher makes the decisions. You won't build that today, but the way up is the same three moves, just packaged for scale: your reading checklist can become a reusable <em>Skill</em> the agent loads on its own when it's relevant, and open plumbing like <strong>MCP</strong> (the Model Context Protocol) wires the agent straight into live sources &mdash; a citation database, your own files &mdash; so it fetches facts instead of guessing at them. And the direction is set: military staff colleges are increasingly teaching officers to build and test AI tools, not just use them, and government platforms like <strong>GenAI.mil</strong> are adding no-code ways to build your own assistant. The specific tools churn &mdash; the ones you'll use in a year may not exist yet &mdash; but <strong>the discipline transfers even when the tool changes.</strong></p>
+
+    <h3>What your finished home looks like</h3>
+    <p>By the end, the four-folder starter has grown into a home for everything the method produces &mdash; not just what you read and wrote, but the critiques you collected and the voice you taught it. Here's the shape to aim for:</p>
+    <div class="tree">
+<span class="dir">your-workspace/</span>
+├── AGENTS.md      <span class="cmt"># the contract (a.k.a. INSTRUCTIONS.md)</span>
+├── <span class="dir">sources/</span>       <span class="cmt"># the papers &amp; documents you read and cite</span>
+├── <span class="dir">rubric/</span>        <span class="cmt"># the reading checklist + your writing standard</span>
+├── <span class="dir">drafts/</span>        <span class="cmt"># your writing, kept in versions</span>
+├── <span class="dir">review/</span>        <span class="cmt"># Referee-2 critiques and your fix lists</span>
+└── <span class="dir">voice/</span>         <span class="cmt"># your style note + TELOS.md (voice &amp; purpose)</span>
+    </div>
+    <p>Two of those homes are new since the starter kit: <code>review/</code>, where you keep what the skeptical reviewer found and what you changed, and <code>voice/</code>, where your style note and TELOS document live. Keep the whole thing on a shared drive with version history and it stops being a one-time trick &mdash; it's a home you (and your team) come back to for the next paper, the next brief, the next decision.</p>
+    <div class="endnote">
+      <p><strong>Train your AI without un-training yourself.</strong> The goal was never to hand the thinking over. It was to stop paying the three taxes &mdash; re-explaining, re-finding, re-saying &mdash; so the thinking you do is the thinking that counts. Be a skeptic, not a cynic: set the machine up, then check everything it hands you, and never sign what you couldn't defend on your own.</p>
+    </div>
+  </section>
+
+  <!-- 9. RESOURCES -->
+  <section class="chapter refs-chapter" id="resources">
+    <div class="ch-num">09 &middot; Resources</div>
+    <h2>Everything referenced here, in one place.</h2>
+    <p class="lede">The links behind the ideas in this guide &mdash; and, at the end, the serious toolkits if you ever want to turn this into a research-grade review pipeline.</p>
+
+    <div class="refs-grid">
+      <div class="ref-group">
+        <h3>Context engineering</h3>
+        <ul>
+          <li><a class="inline" href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener">Effective Context Engineering</a> &mdash; Anthropic Applied AI team.</li>
+          <li><a class="inline" href="https://platform.claude.com/cookbook/tool-use-context-engineering-context-engineering-tools" target="_blank" rel="noopener">Anthropic Cookbook</a> &mdash; memory, compaction, tool clearing.</li>
+          <li><a class="inline" href="https://www.anthropic.com/news/projects" target="_blank" rel="noopener">Projects</a> &mdash; persistent state, the no-code version of a home.</li>
+        </ul>
+      </div>
+      <div class="ref-group">
+        <h3>Reading &amp; evaluating evidence</h3>
+        <ul>
+          <li><a class="inline" href="https://press.princeton.edu/books/hardcover/9780691214368/thinking-clearly-with-data" target="_blank" rel="noopener">Bueno de Mesquita &amp; Fowler, <em>Thinking Clearly with Data</em></a> &mdash; claim, evidence, assumptions. Start here.</li>
+          <li><a class="inline" href="https://causalinf.substack.com/p/claude-code-part-12-how-i-use-claude" target="_blank" rel="noopener">Scott Cunningham &mdash; "Referee 2" with AI</a> &mdash; adversarial empirical review.</li>
+          <li><a class="inline" href="https://theeffectbook.net" target="_blank" rel="noopener">Huntington-Klein, <em>The Effect</em></a> &mdash; free online; the methods bench for cause-and-effect claims.</li>
+          <li>Pyrrho of Elis (c. 360&ndash;270 BCE) &mdash; skepticism as discipline, not cynicism.</li>
+        </ul>
+      </div>
+      <div class="ref-group">
+        <h3>Voice &amp; writing</h3>
+        <ul>
+          <li>McCloskey, D. (1999). <em>Economical Writing</em> &mdash; the read-aloud test; active verbs.</li>
+          <li>Strunk &amp; White, <em>The Elements of Style</em> &mdash; Rule 17: omit needless words.</li>
+          <li>Tongue and Quill (AFH 33-337) &mdash; active voice, BLUF, plain language.</li>
+          <li>AR 25-50 &mdash; memo format reference.</li>
+        </ul>
+      </div>
+      <div class="ref-group">
+        <h3>Agent CLIs &amp; instruction files</h3>
+        <ul>
+          <li>Claude Code, OpenAI Codex CLI, Gemini CLI &mdash; the on-your-computer agents.</li>
+          <li><a class="inline" href="https://agents.md" target="_blank" rel="noopener"><code>AGENTS.md</code></a> &mdash; the open, vendor-neutral instruction-file standard most tools now read.</li>
+          <li><a class="inline" href="https://github.com/Black-JL/ai-in-the-terminal" target="_blank" rel="noopener">ai-in-the-terminal</a> &mdash; install guide for Mac / Windows / Linux.</li>
+        </ul>
+      </div>
+      <div class="ref-group">
+        <h3>Government AI tools (2026)</h3>
+        <ul>
+          <li><strong>GenAI.mil</strong> &mdash; Gemini + ChatGPT, universal CAC, IL5 / CUI.</li>
+          <li><strong>Ask Sage</strong> &mdash; 25+ models, retrieval, IL5.</li>
+          <li><strong>CamoGPT</strong> &mdash; Army-specific, SIPRNet capability.</li>
+          <li><strong>M365 Copilot</strong> &mdash; GCC-High, document-centric.</li>
+        </ul>
+      </div>
+      <div class="ref-group">
+        <h3>This workspace &amp; where it goes</h3>
+        <ul>
+          <li><strong>The starter workspace</strong> &mdash; the folder you fill in, from the course page.</li>
+          <li><strong>Give Your AI a Home</strong> &mdash; this guide; keep it open beside the work.</li>
+          <li><a class="inline" href="https://black-jl.github.io/Research-Project-Flow/" target="_blank" rel="noopener">Research-Project-Flow</a> &mdash; the same pattern scaled to a full research project (the Rung&nbsp;3 version).</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="refs-subhead">Adversarial reviewers &amp; research tools &mdash; for the ambitious</h3>
+    <p>Past a single skeptical reviewer, these are the strongest open toolkits for turning AI into a rigorous research referee. Most assume some comfort with the command line &mdash; they're a map of where this goes, not homework for today.</p>
+    <div class="refs-list">
+      <div class="ref-item">
+        <div class="ref-name"><a class="inline" href="https://github.com/scunning1975/MixtapeTools" target="_blank" rel="noopener">Cunningham &mdash; MixtapeTools / Referee 2</a></div>
+        <div class="ref-desc">The closest thing to an adversarial "Reviewer 2": separate audits for code, replication, and econometrics, plus Blindspot (what's missing) and Bibcheck (citation verification).</div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-name"><a class="inline" href="https://github.com/pedrohcgs/claude-code-my-workflow" target="_blank" rel="noopener">Pedro H. C. Sant'Anna &mdash; claude-code-my-workflow</a></div>
+        <div class="ref-desc">A forkable academic Claude Code workflow: <code>/review-paper --peer</code>, editor/referee roles, journal calibration, and quality gates. (<a class="inline" href="https://psantanna.com/claude-code-my-workflow/workflow-guide.html" target="_blank" rel="noopener">guide</a>)</div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-name"><a class="inline" href="https://github.com/hugosantanna/clo-author" target="_blank" rel="noopener">Hugo Sant'Anna &mdash; Clo-Author</a></div>
+        <div class="ref-desc">A full paper-lifecycle scaffold &mdash; 18 agents, worker&ndash;critic pairs, simulated peer review, and replication compliance.</div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-name"><a class="inline" href="https://github.com/claesbackman/AI-research-feedback" target="_blank" rel="noopener">Claes Backman &mdash; AI-research-feedback</a></div>
+        <div class="ref-desc">A compact six-agent pre-submission referee report: style, consistency, unsupported claims, math, tables, and a journal-specific adversarial referee.</div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-name"><a class="inline" href="https://lcrawfurd.github.io/claude-skills/" target="_blank" rel="noopener">Lee Crawfurd &mdash; Claude Code research skills</a></div>
+        <div class="ref-desc">An installable bundle that blends Cunningham's Referee 2, Backman's pre-submission review, and code review into clean, reusable skills.</div>
+      </div>
+      <div class="ref-item">
+        <div class="ref-name"><a class="inline" href="https://openaireview.org/" target="_blank" rel="noopener">OpenAIReview &mdash; Chicago Human+AI Lab</a></div>
+        <div class="ref-desc">General-purpose "paper referee as software," with worked examples of papers reviewed by multiple models.</div>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<script>
+(function () {
+  // Copy buttons
+  document.querySelectorAll('.prompt').forEach(function (box) {
+    var btn = box.querySelector('.copy-btn');
+    var pre = box.querySelector('pre');
+    if (!btn || !pre) return;
+    btn.addEventListener('click', function () {
+      navigator.clipboard.writeText(pre.innerText).then(function () {
+        var old = btn.textContent;
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = old; }, 1400);
+      });
+    });
+  });
+  // Scroll-spy for the TOC
+  var links = Array.from(document.querySelectorAll('nav.toc a'));
+  var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  function onScroll() {
+    var y = window.scrollY + window.innerHeight * 0.28;
+    var active = 0;
+    sections.forEach(function (s, i) { if (s && s.offsetTop <= y) active = i; });
+    links.forEach(function (a, i) { a.classList.toggle('active', i === active); });
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>
