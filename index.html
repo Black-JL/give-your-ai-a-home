@@ -141,6 +141,13 @@ figure.wire figcaption { font-family: var(--type-serif); font-style: italic; fon
 .ref-item .ref-desc { font-size: 0.9rem; color: var(--fg-soft); line-height: 1.45; max-width: none; }
 @media (max-width: 900px) { .refs-grid { grid-template-columns: 1fr; } .ref-item { grid-template-columns: 1fr; gap: 0.15rem; } }
 
+/* PAGE FOOTER / LICENSE */
+.site-footer { margin-top: 3.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); font-size: 0.82rem; line-height: 1.5; color: var(--fg-muted); }
+.site-footer p { margin: 0 0 0.3rem; max-width: none; }
+.site-footer .lic-line { color: var(--fg-soft); }
+.site-footer a { color: var(--fg-soft); text-decoration: none; border-bottom: 1px solid var(--rule); }
+.site-footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
 /* MOBILE + PRINT */
 @media (max-width: 900px) {
   .wrap { grid-template-columns: 1fr; gap: 0; }
@@ -190,6 +197,7 @@ figure.wire figcaption { font-family: var(--type-serif); font-style: italic; fon
   .refs-list { margin-top: 0.7rem; }
   .ref-item { padding: 0.5rem 0; }
   .endnote { margin-top: 1.6rem; padding-top: 1rem; }
+  .site-footer { margin-top: 1.8rem; padding-top: 1rem; break-inside: avoid; }
 
   /* let chapters flow across page breaks (no big end-of-page gaps),
      but never orphan a heading from the text that follows it */
@@ -720,6 +728,11 @@ point you at whenever we write something that matters.</pre>
       </div>
     </div>
   </section>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Jared Black &nbsp;&middot;&nbsp; <strong>Give Your AI a Home</strong></p>
+    <p class="lic-line">Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0 International (CC&nbsp;BY&nbsp;4.0)</a>. You are free to share and adapt this guide &mdash; including for your own courses and training &mdash; with attribution.</p>
+  </footer>
 </main>
 </div>
 
